@@ -1,8 +1,11 @@
 package com.Curso10Springboot.Curso.Controllers;
 
 import com.Curso10Springboot.domain.Customer;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.server.RemoteRef;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,72 +26,82 @@ public class CustomerRestController {
 
     //@RequestMapping(method = RequestMethod.GET)
     @GetMapping
-    public List<Customer> getAllCustomers() {
+    public ResponseEntity <List<Customer>> getAllCustomers() {
 
-        return customers;
+        return ResponseEntity.ok(customers);
     }
 
 
 
 
     @GetMapping("/id/{id}")
-    public Customer getCustomerById(@PathVariable int id) {
-        return customers.stream()
-                .filter(customer -> customer.getID() == id)
-                .findFirst()
-                .orElse(null);
+    public ResponseEntity <Customer> getCustomerById(@PathVariable int id) {
+        return ResponseEntity.ok(
+                customers.stream()
+                        .filter(customer -> customer.getID() == id)
+                        .findFirst()
+                        .orElse(null)
+        );
     }
 
 
     // @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
     @GetMapping("/username/{username}")
-    public Customer getCustomerByUsername(@PathVariable String username) {
-        return customers.stream()
-                .filter(customer -> customer.getUsername().equalsIgnoreCase(username))
-                .findFirst()
-                .orElse(null);
+    public ResponseEntity<?>  getCustomerByUsername(@PathVariable String username) {
+     for (Customer customer : customers) {
+            if (customer.getUsername().equals(username)) {
+                return ResponseEntity.ok(customer);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "Clente not found with username: " + username);
     }
 
 
     // Endpoint to add a new customer method
      @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
-    public Customer postCliente( @RequestBody  Customer customer) {
+    public ResponseEntity<?> postCliente( @RequestBody  Customer customer) {
         customers.add(customer);
-        return customer;
+        return ResponseEntity.status(HttpStatus.CREATED).body("Customer created successfully: " + customer.getName());
 
     }
 
 
 
     @PutMapping
-    public Customer putCliente( @RequestBody Customer customer ) {
+    public ResponseEntity<?> putCliente( @RequestBody Customer customer ) {
       for (Customer c : customers) {
             if (c.getID() == customer.getID()) {
                 c.setName(customer.getName());
                 c.setUsername(customer.getUsername());
                 c.setPassword(customer.getPassword());
-                return c;
+               //return ResponseEntity.ok( "Customer updated successfully: " + customer.getID());
+                //simplificada
+                return ResponseEntity.noContent().build();
             }
         }
-        return null; // If customer not found
+        //return null; // If customer not found
+        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found with ID: " + customer.getID());
+        return ResponseEntity.noContent().build();
+
+
     }
 
 
 
     @DeleteMapping("/{id}")
-    public String deleteCliente(@PathVariable int id) {
-        boolean removed = customers.removeIf(customer -> customer.getID() == id);
-
-        if (removed) {
-            return "Customer with ID " + id + " deleted successfully.";
-        } else {
-            return "Customer with ID " + id + " not found.";
+    public ResponseEntity<?>  deleteCliente(@PathVariable int id) {
+       for (Customer c : customers) {
+            if (c.getID() == id) {
+                customers.remove(c);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body( "Customer deleted successfully with ID: " + id);
+            }
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found with ID: " + id);
     }
 
     @PatchMapping
-    public Customer patchCliente(@RequestBody Customer customer) {
+    public ResponseEntity<?> patchCliente(@RequestBody Customer customer) {
         for (Customer c : customers) {
             if (c.getID() == customer.getID()) {
                 if (customer.getName() != null) {
@@ -100,10 +113,10 @@ public class CustomerRestController {
                 if (customer.getPassword() != null) {
                     c.setPassword(customer.getPassword());
                 }
-                return c;
+                return ResponseEntity.ok("Customer updated successfully: " + customer.getID());
             }
         }
-        return null; // If customer not found
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found with ID: " + customer.getUsername());
     }
 
 
