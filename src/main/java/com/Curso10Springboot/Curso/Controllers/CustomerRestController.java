@@ -1,13 +1,12 @@
 package com.Curso10Springboot.Curso.Controllers;
 
-import com.Curso10Springboot.domain.Customer;
+import com.Curso10Springboot.Curso.domain.Customer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.rmi.server.RemoteRef;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

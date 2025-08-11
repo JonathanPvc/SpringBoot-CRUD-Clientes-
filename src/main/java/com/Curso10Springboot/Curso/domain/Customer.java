@@ -1,4 +1,4 @@
-package com.Curso10Springboot.domain;
+package com.Curso10Springboot.Curso.domain;
 // clase po
 
 
