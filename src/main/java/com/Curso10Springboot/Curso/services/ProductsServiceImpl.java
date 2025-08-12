@@ -1,12 +1,16 @@
-package services;
+package com.Curso10Springboot.Curso.services;
 
 import com.Curso10Springboot.Curso.domain.Product;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProductsServicelmpl {
+@Primary
+@Service
+public class ProductsServiceImpl implements ProductService {
 
     List <Product> products = new ArrayList<>(Arrays.asList(
             new Product( 1, "Laptop", 999.99, 10),
@@ -16,9 +20,10 @@ public class ProductsServicelmpl {
             new Product( 5, "Headphones", 89.99, 50)
     ));
 
-
-    public List<Product> getAllProducts() {
+    @Override
+    public List<Product> getProducts() {
         return products;
     }
+
 
 }
