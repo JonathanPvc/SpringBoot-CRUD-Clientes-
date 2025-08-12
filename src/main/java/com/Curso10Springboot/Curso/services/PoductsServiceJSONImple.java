@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-@Service
+@Service("jsonResourceService")
 public class PoductsServiceJSONImple implements  ProductService {
 
 

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Primary
-@Service
+
+@Service("listResourceService")
 public class ProductsServiceImpl implements ProductService {
 
     List <Product> products = new ArrayList<>(Arrays.asList(
