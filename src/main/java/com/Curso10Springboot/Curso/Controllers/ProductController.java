@@ -2,6 +2,7 @@ package com.Curso10Springboot.Curso.Controllers;
 import com.Curso10Springboot.Curso.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,8 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    @Qualifier("jsonResourceService")
+    @Lazy
+    //@Qualifier("jsonResourceService")
     private ProductService productService;
 
     @GetMapping
